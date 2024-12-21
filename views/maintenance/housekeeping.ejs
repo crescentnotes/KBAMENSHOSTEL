@@ -1,0 +1,49 @@
+<%- include('../partials/header') %>
+
+<section>
+    <div class="container">
+        <div class="box">
+            <!-- Logo at the top center -->
+            <div class="housekeeping-logo">
+                <img src="/images/housekeeping-logo.jpg" alt="Housekeeping Logo">
+            </div>
+
+            <!-- Display Error Message Below the Form -->
+            <% if (typeof error !== 'undefined' && error) { %>
+                <div id="error-message" style="color: red; margin-top: 20px;">
+                    <%= error %>
+                </div>
+            <% } %>
+
+            <!-- Housekeeping Request Form -->
+            <form id="housekeepingForm" method="post" action="/housekeepingrequest">
+                <!-- Form fields -->
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name" required>
+
+                <label for="rrn">RRN/Application Number</label>
+                <input type="text" id="rrn" name="rrn" placeholder="Enter RRN or application number" required>
+
+                <label for="block">Block</label>
+                <input type="text" id="block" name="block" placeholder="Enter block" required>
+
+                <label for="room_number">Room Number</label>
+                <input type="text" id="room_number" name="room_number" placeholder="Enter room number" required>
+
+                <!-- Submit button -->
+                <button type="submit" class="housekeeping-submit-btn">Submit Housekeeping Request</button>
+                <input type="hidden" name="status" value="pending">
+            </form>
+
+            <!-- Confirmation Message -->
+            <% if (typeof success !== 'undefined' && success) { %>
+                <div id="confirmation-message" style="color: green; margin-top: 20px;">
+                    <%= success %>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</section>
+
+<%- include('../partials/footer') %>
+

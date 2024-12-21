@@ -1,0 +1,568 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance Admin Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ccc;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        button {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .success-message {
+            color: green;
+            margin-bottom: 20px;
+        }
+        .table-container {
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Maintenance Admin Panel</h1>
+
+    <% if (locals.successMessage) { %>
+        <div class="success-message"><%= successMessage %></div>
+    <% } %>
+
+    <div class="table-container">
+        <h2>Housekeeping Requests</h2>
+        <h3>Pending Requests</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>RRN</th>
+                    <th>Block</th>
+                    <th>Room Number</th>
+                    <th>Maintenance Done</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% pendingHousekeepingRequests.forEach((request) => { %>
+                    <tr>
+                        <td><%= request.id %></td>
+                        <td><%= request.name %></td>
+                        <td><%= request.rrn %></td>
+                        <td><%= request.block %></td>
+                        <td><%= request.room_number %></td>
+                        <td><%= request.maintenance_done ? 'Yes' : 'No' %></td>
+                        <td><%= request.status %></td>
+                        <td>
+                            <form action="/<%= userRole %>/update-housekeeping/<%= request.id %>" method="POST">
+                                <input type="checkbox" name="completed" <%= request.maintenance_done ? 'checked' : '' %> />
+                                <button type="submit">Update</button>
+                            </form>
+                            
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+
+        <h3>Completed Requests</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>RRN</th>
+                    <th>Block</th>
+                    <th>Room Number</th>
+                    <th>Maintenance Done</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% completedHousekeepingRequests.forEach((request) => { %>
+                    <tr>
+                        <td><%= request.id %></td>
+                        <td><%= request.name %></td>
+                        <td><%= request.rrn %></td>
+                        <td><%= request.block %></td>
+                        <td><%= request.room_number %></td>
+                        <td><%= request.maintenance_done ? 'Yes' : 'No' %></td>
+                        <td><%= request.status %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="table-container">
+        <h2>Electrical Work Requests</h2>
+        <h3>Pending Requests</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>RRN</th>
+                    <th>Block</th>
+                    <th>Room Number</th>
+                    <th>Maintenance Done</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% pendingElectricalRequests.forEach((request) => { %>
+                    <tr>
+                        <td><%= request.id %></td>
+                        <td><%= request.name %></td>
+                        <td><%= request.rrn %></td>
+                        <td><%= request.block %></td>
+                        <td><%= request.room_number %></td>
+                        <td><%= request.maintenance_done ? 'Yes' : 'No' %></td>
+                        <td><%= request.status %></td>
+                        <td>
+                            <form action="/update-electrical/<%= request.id %>?section=electrical" method="POST">
+                                <input type="checkbox" name="completed" <%= request.maintenance_done ? 'checked' : '' %> />
+                                <button type="submit">Update</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+
+        <h3>Completed Requests</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>RRN</th>
+                    <th>Block</th>
+                    <th>Room Number</th>
+                    <th>Maintenance Done</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% completedElectricalRequests.forEach((request) => { %>
+                    <tr>
+                        <td><%= request.id %></td>
+                        <td><%= request.name %></td>
+                        <td><%= request.rrn %></td>
+                        <td><%= request.block %></td>
+                        <td><%= request.room_number %></td>
+                        <td><%= request.maintenance_done ? 'Yes' : 'No' %></td>
+                        <td><%= request.status %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="table-container">
+        <h2>Carpentry Work Requests</h2>
+        <h3>Pending Requests</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>RRN</th>
+                    <th>Block</th>
+                    <th>Room Number</th>
+                    <th>Maintenance Done</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% pendingCarpentryRequests.forEach((request) => { %>
+                    <tr>
+                        <td><%= request.id %></td>
+                        <td><%= request.name %></td>
+                        <td><%= request.rrn %></td>
+                        <td><%= request.block %></td>
+                        <td><%= request.room_number %></td>
+                        <td><%= request.maintenance_done ? 'Yes' : 'No' %></td>
+                        <td><%= request.status %></td>
+                        <td>
+                            <form action="/update-carpentry/<%= request.id %>?section=Carpentry" method="POST">
+                                <input type="checkbox" name="completed" <%= request.maintenance_done ? 'checked' : '' %> />
+                                <button type="submit">Update</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+
+        <h3>Completed Requests</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>RRN</th>
+                    <th>Block</th>
+                    <th>Room Number</th>
+                    <th>Maintenance Done</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% completedCarpentryRequests.forEach((request) => { %>
+                    <tr>
+                        <td><%= request.id %></td>
+                        <td><%= request.name %></td>
+                        <td><%= request.rrn %></td>
+                        <td><%= request.block %></td>
+                        <td><%= request.room_number %></td>
+                        <td><%= request.maintenance_done ? 'Yes' : 'No' %></td>
+                        <td><%= request.status %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance Admin Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+            margin: 0;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+        .sidebar h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .sidebar a {
+            color: #ecf0f1;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 5px;
+            display: block;
+            margin-bottom: 10px;
+            transition: background 0.3s;
+        }
+        .sidebar a:hover {
+            background-color: #34495e;
+        }
+        .sidebar a.active {
+            background-color: #16a085;
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f7f7f7;
+        }
+        button {
+            padding: 5px 12px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Admin Panel</h2>
+        <a href="#housekeeping" onclick="showSection('housekeeping')" id="link-housekeeping">Housekeeping Requests</a>
+        <a href="#completed-housekeeping" onclick="showSection('completed-housekeeping')" id="link-completed-housekeeping">Completed Housekeeping</a>
+        <a href="#electrical" onclick="showSection('electrical')" id="link-electrical">Electrical Requests</a>
+        <a href="#completed-electrical" onclick="showSection('completed-electrical')" id="link-completed-electrical">Completed Electrical</a>
+        <a href="#carpentry" onclick="showSection('carpentry')" id="link-carpentry">Carpentry Requests</a>
+        <a href="#completed-carpentry" onclick="showSection('completed-carpentry')" id="link-completed-carpentry">Completed Carpentry</a>
+    </div>
+
+    <div class="content">
+        <!-- Housekeeping Requests Section -->
+        <div id="housekeeping" class="section">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>RRN</th>
+                        <th>Block</th>
+                        <th>Room Number</th>
+                        <th>Maintenance Done</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% pendingHousekeepingRequests.forEach((request) => { %>
+                        <tr>
+                            <td><%= request.id %></td>
+                            <td><%= request.name %></td>
+                            <td><%= request.rrn %></td>
+                            <td><%= request.block %></td>
+                            <td><%= request.room_number %></td>
+                            <td><%= request.maintenance_done ? 'Yes' : 'No' %></td>
+                            <td><%= request.status %></td>
+                            <td>
+                                <form action="/<%= userRole %>/update-housekeeping/<%= request.id %>" method="POST">
+                                    <input type="checkbox" name="completed" <%= request.maintenance_done ? 'checked' : '' %> />
+                                    <button type="submit">Update</button>
+                                </form>
+                                
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Completed Housekeeping Section -->
+        <div id="completed-housekeeping" class="section hidden">
+            <h1>Completed Housekeeping Requests</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>RRN</th>
+                        <th>Block</th>
+                        <th>Room Number</th>
+                        <th>Maintenance Done</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% completedHousekeepingRequests.forEach((request) => { %>
+                        <tr>
+                            <td><%= request.id %></td>
+                            <td><%= request.name %></td>
+                            <td><%= request.rrn %></td>
+                            <td><%= request.block %></td>
+                            <td><%= request.room_number %></td>
+                            <td><%= request.maintenance_done ? 'Yes' : 'No' %></td>
+                            <td><%= request.status %></td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Electrical Requests Section -->
+        <div id="electrical" class="section hidden">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>RRN</th>
+                        <th>Block</th>
+                        <th>Room Number</th>
+                        <th>Maintenance Done</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% pendingElectricalRequests.forEach((request) => { %>
+                        <tr>
+                            <td><%= request.id %></td>
+                            <td><%= request.name %></td>
+                            <td><%= request.rrn %></td>
+                            <td><%= request.block %></td>
+                            <td><%= request.room_number %></td>
+                            <td><%= request.maintenance_done ? 'Yes' : 'No' %></td>
+                            <td><%= request.status %></td>
+                            <td>
+                                <form action="/<%= userRole %>/update-electrical/<%= request.id %>" method="POST">
+                                    <input type="checkbox" name="completed" <%= request.maintenance_done ? 'checked' : '' %> />
+                                    <button type="submit">Update</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Completed Electrical Section -->
+        <div id="completed-electrical" class="section hidden">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>RRN</th>
+                        <th>Block</th>
+                        <th>Room Number</th>
+                        <th>Maintenance Done</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+            <tbody>
+                <% completedElectricalRequests.forEach((request) => { %>
+                    <tr>
+                        <td><%= request.id %></td>
+                        <td><%= request.name %></td>
+                        <td><%= request.rrn %></td>
+                        <td><%= request.block %></td>
+                        <td><%= request.room_number %></td>
+                        <td><%= request.maintenance_done ? 'Yes' : 'No' %></td>
+                        <td><%= request.status %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+        </div>
+
+        <!-- Carpentry Requests Section -->
+        <div id="carpentry" class="section hidden">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>RRN</th>
+                        <th>Block</th>
+                        <th>Room Number</th>
+                        <th>Maintenance Done</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% pendingCarpentryRequests.forEach((request) => { %>
+                        <tr>
+                            <td><%= request.id %></td>
+                            <td><%= request.name %></td>
+                            <td><%= request.rrn %></td>
+                            <td><%= request.block %></td>
+                            <td><%= request.room_number %></td>
+                            <td><%= request.maintenance_done ? 'Yes' : 'No' %></td>
+                            <td><%= request.status %></td>
+                            <td>
+                                <form action="/<%= userRole %>/update-carpentry/<%= request.id %>" method="POST">
+                                    <input type="checkbox" name="completed" <%= request.maintenance_done ? 'checked' : '' %> />
+                                    <button type="submit">Update</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Completed Carpentry Section -->
+        <div id="completed-carpentry" class="section hidden">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>RRN</th>
+                        <th>Block</th>
+                        <th>Room Number</th>
+                        <th>Maintenance Done</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% completedCarpentryRequests.forEach((request) => { %>
+                        <tr>
+                            <td><%= request.id %></td>
+                            <td><%= request.name %></td>
+                            <td><%= request.rrn %></td>
+                            <td><%= request.block %></td>
+                            <td><%= request.room_number %></td>
+                            <td><%= request.maintenance_done ? 'Yes' : 'No' %></td>
+                            <td><%= request.status %></td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to handle section switching
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => section.classList.add('hidden'));
+
+            document.getElementById(sectionId).classList.remove('hidden');
+
+            // Update active link
+            const links = document.querySelectorAll('.sidebar a');
+            links.forEach(link => link.classList.remove('active'));
+            document.getElementById('link-' + sectionId).classList.add('active');
+        }
+
+        // Show the first section by default
+        showSection('housekeeping');
+    </script>
+</body>
+</html>

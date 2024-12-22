@@ -33,15 +33,15 @@ app.set("view engine", "ejs");
 app.use(express.static('public'));
 
 // Session setup
-app.use(session({
-    secret: process.env.SESSION_SECRET || 'your-secret-key',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        secure: process.env.NODE_ENV === 'production', // Set to false for local testing
-        maxAge: 1000 * 60 * 60 // 1 hour session
-    }
-}));
+// app.use(session({
+//     secret: process.env.SESSION_SECRET || 'your-secret-key',
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: {
+//         secure: process.env.NODE_ENV === 'production', // Set to false for local testing
+//         maxAge: 1000 * 60 * 60 // 1 hour session
+//     }
+// }));
 
 
 // Public routes

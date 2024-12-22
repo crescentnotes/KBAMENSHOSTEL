@@ -118,15 +118,17 @@ app.use(express.static('public'));
 
 // Session setup with security options
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'your-session-secret', // Use environment variable for secret
+  secret: 'your-session-secret',  // Set session secret directly (not from environment variable)
   resave: false,
   saveUninitialized: true,
   cookie: {
-    secure: process.env.NODE_ENV === 'production', // Ensure cookies are secure in production
-    httpOnly: true, // Recommended for better security
-    maxAge: 3 * 365 * 24 * 60 * 60 * 1000 // 3 years session expiry
+    // Set 'secure' to false for development (if using HTTP instead of HTTPS)
+    secure: false,  // Change to true only when using HTTPS in production
+    httpOnly: true,  // To enhance security and prevent client-side access to cookies
+    maxAge: 3 * 365 * 24 * 60 * 60 * 1000 // Session expiry: 3 years
   }
 }));
+
 
 // Public routes (no authentication required)
 app.use('/', adminManagementLoginRoute);

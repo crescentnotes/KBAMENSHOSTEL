@@ -82,6 +82,7 @@
 
 // export default app;
 import express from 'express';
+import path from 'path' ;
 import session from 'express-session';
 import dotenv from 'dotenv'; // To manage environment variables
 import homeroutes from './Routes/homeroute.js';

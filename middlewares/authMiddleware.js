@@ -7,22 +7,43 @@ export const checkAuthenticated = (req, res, next) => {
 };
 
 // Middleware to allow unauthenticated access to specific public routes
-export const isAuthenticated = (req, res, next) => {
-    const publicPaths = ['/login', '/admin/login', '/rtadmin/login'];
+// export const isAuthenticated = (req, res, next) => {
+//     const publicPaths = ['/login', '/admin/login', '/rtadmin/login'];
     
-    // Allow access if the route is public
+//     // Allow access if the route is public
+//     if (publicPaths.includes(req.path)) {
+//         return next();
+//     }
+
+//     // Check if the user is authenticated for other routes
+//     if (req.session.user) {
+//         return next();
+//     }
+
+//     // Redirect to login if not authenticated
+//     res.redirect('/login');
+// };
+export const isAuthenticated = (req, res, next) => {
+    // Define routes that don't require authentication (public routes)
+    const publicPaths = ['/login', '/admin/login', '/rtadmin/login'];
+
+    // If the requested path is public (no authentication required), proceed
     if (publicPaths.includes(req.path)) {
         return next();
     }
 
-    // Check if the user is authenticated for other routes
+    // Log the session data for debugging purposes (optional, remove in production)
+    console.log('Session:', req.session.user);
+
+    // If the user is authenticated (session exists), proceed to the next middleware
     if (req.session.user) {
         return next();
     }
 
-    // Redirect to login if not authenticated
+    // If not authenticated, redirect to the login page
     res.redirect('/login');
 };
+
 export const isManagementAdminAuthenticated = (req, res, next) => {
     // Allow access to management admin login page if not authenticated
     if (req.path.startsWith('/admin/login')) {

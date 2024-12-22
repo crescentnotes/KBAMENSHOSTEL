@@ -96,7 +96,7 @@ router.post('/login', async (req, res) => {
                     }
 
                     // After successful login, redirect the user to home
-                    return res.redirect('/home');  // Redirect to home page (or whichever page you want)
+                    return res.redirect('/');  // Redirect to home page (or whichever page you want)
                 } else {
                     res.status(401).json({ message: "Incorrect Password" });
                 }

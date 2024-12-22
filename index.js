@@ -43,10 +43,14 @@ app.use(express.static('public'));
 //     }
 // }));
 app.use(session({
-  secret: 'your-secret-key',
+  secret: 'your-session-secret',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: true }, // Use 'true' in production with https
+  cookie: { 
+    // Remove maxAge to make the session last until the browser is closed
+   expire: 3 * 365 * 24 * 60 * 60 * 1000
+    // You can also add other options like 'secure' or 'httpOnly' for security
+  }
 }));
 
 // Public routes

@@ -31,7 +31,7 @@ router.post('/login', async (req, res) => {
   
           if (isMatch) {
             req.session.user = user;  // Store user info in session
-            res.render('homepage');
+             
             // Insert login record into logins table
             try {
               await pool.query("INSERT INTO logins (email) VALUES ($1)", [email]);

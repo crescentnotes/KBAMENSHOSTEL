@@ -61,10 +61,10 @@ app.use('/', housekeepingroute); // Assuming this route is public or needs prote
 app.use('/', electricalworkroute); // Assuming this route is public or needs protection
 
 // Error handling middleware (optional)
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
-});
+// app.use((err, req, res, next) => {
+//     console.error(err.stack);
+//     res.status(500).send('Something broke!');
+// });
 
 // Start the server
 app.listen(port, () => {

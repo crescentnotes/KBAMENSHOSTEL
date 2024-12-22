@@ -42,7 +42,12 @@ app.use(express.static('public'));
 //         maxAge: 1000 * 60 * 60 // 1 hour session
 //     }
 // }));
-
+app.use(session({
+  secret: 'your-secret-key',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }, // Use 'true' in production with https
+}));
 
 // Public routes
 app.use('/', adminManagementLoginRoute);

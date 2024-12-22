@@ -87,11 +87,7 @@ router.post('/login', async (req, res) => {
                 }
 
                 if (isMatch) {
-                    req.session.user = {   // Set session only after login success
-                        id: user.id,
-                        email: user.email,
-                        name: user.name  // Example of setting user-specific data
-                    };
+                     req.session.user = user;
                     console.log("Session after login:", req.session); // Debug log for session
                     try {
                         await pool.query("INSERT INTO logins (email) VALUES ($1)", [email]);

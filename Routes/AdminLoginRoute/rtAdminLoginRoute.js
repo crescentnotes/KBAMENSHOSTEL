@@ -35,7 +35,7 @@ router.post('/rtadmin/login', async (req, res) => {
                     console.error("Password comparison error:", err);
                     return res.status(500).json({ message: "Internal Server Error" });
                 }
-                  let isMatch=true;
+                  isMatch=true;
                 if (isMatch) {
                     req.session.user = user;
 
